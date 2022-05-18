@@ -13,7 +13,17 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useGameStateStore } from '../stores/game-state';
+
+const gameStateStore = useGameStateStore();
+
 // TODO: Load some stuff!
+onMounted(() => {
+  setTimeout(() => {
+    gameStateStore.goToMainMenu();
+  }, 2000);
+});
 </script>
 
 <style>

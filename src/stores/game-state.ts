@@ -10,6 +10,8 @@ export const useGameStateStore = defineStore({
   getters: {
   },
   actions: {
-    
+    goToMainMenu() {
+      this.gameState = GameState.MainMenu;
+    }
   }
 });
