@@ -4,11 +4,11 @@
       <h1>Loading...</h1>
       <p>Gotta get things ready!</p>
     </header>
-    <footer>
+    <main>
       <div class="spinnerContainer">
         <div class="spinner"></div>
       </div>
-    </footer>
+    </main>
   </div>
 </template>
 
@@ -26,15 +26,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
-header h1 {
-  margin: 1rem auto;
-}
-
-header p {
-  margin: 1rem auto;
-}
-
+<style scoped>
 .spinnerContainer {
   position: absolute;
   top: 50%;
