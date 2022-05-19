@@ -9,10 +9,10 @@
       <li><a href="#" @click.prevent="onCreditsClicked()">Credits</a></li>
     </ul>
     <br>
-    <div class="stats" v-if="hasHighScoreData">
+    <div class="stats" v-if="state.highScoreData !== null">
       <h3>Stats</h3>
-      <p>Your high score is {{ highScoreData.highScore }}</p>
-      <p>Your highest level reached is {{ highScoreData.highestLevelReached }}</p>
+      <p>Your high score is {{ state.highScoreData?.highScore }}</p>
+      <p>Your highest level reached is {{ state.highScoreData?.highestLevelReached }}</p>
       <a href="#" @click.prevent="clearHighScoreData()">Clear data</a>
     </div>
     <footer>
@@ -22,13 +22,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { HighScoreService } from '@/services/HighScoreService';
+import { computed, onMounted, onUnmounted, reactive } from 'vue';
 
-import type { HighScoreData } from '../models/HighScoreData';
+import type { HighScoreData, HighScoreDataEvent } from '../models/HighScoreData';
 
 import { useGameStateStore } from '../stores/game-state';
 
 const gameStateStore = useGameStateStore();
+
+const state = reactive({
+  highScoreData: HighScoreService.blankScoreData(),
+});
 
 function onPlayClicked() {
   alert('wow!');
@@ -39,20 +44,26 @@ function onCreditsClicked() {
 }
 
 function clearHighScoreData() {
-  localStorage.clear();
+  HighScoreService.clearHighScoreData();
 }
 
-const hasHighScoreData = computed(() => {
-  return localStorage.getItem('HighScore') !== null;
+var highScoreEventListener: EventListener = ((event: CustomEvent<HighScoreDataEvent>) => {
+    state.highScoreData = event.detail.jsonDataString !== undefined ? JSON.parse(event.detail.jsonDataString!) : null;
+  }) as EventListener;
+
+onMounted(() => {
+  window.addEventListener('highscore-localstorage-changed', highScoreEventListener);
+
+  // Fetch the latest score.
+  HighScoreService.dispatchScoreUpdate();
 });
 
-const highScoreData = computed(() => {
-  let result: HighScoreData = JSON.parse(localStorage.getItem('HighScore')!);
-  return result;
+onUnmounted(() => {
+  window.removeEventListener('highscore-localstorage-changed', highScoreEventListener);
 });
 </script>
 
-<style>
+<style scoped>
 .menuList {
   list-style-type: none;
   padding: 0;
@@ -69,10 +80,14 @@ const highScoreData = computed(() => {
 }
 
 .stats h3 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .stats p {
   margin: 0;
+}
+
+footer {
+  margin-top: 25px;
 }
 </style>
