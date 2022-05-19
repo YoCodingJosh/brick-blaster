@@ -1,0 +1,21 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+  steps:
+  - name: Checkout repository 📖
+    uses: actions/checkout@v3
+  - name: Set up Node 18
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18
+  - name: Install NPM dependencies 💾
+    run: npm ci
+  - name: Build it 🛠️
+    run: npm run build
+  - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages
+          folder: dist
