@@ -10,9 +10,13 @@ export abstract class GameAssetService {
 
     let promises: Promise<void>[] = [];
 
+    const devBasePath = './src/assets/game/';
+    const prodBasePath = './assets/game/';
+
     assetData.images.forEach(async (image) => {
       this.imagesMap.set(image.key, new Image());
-      this.imagesMap.get(image.key)!.src = image.value;
+
+      this.imagesMap.get(image.key)!.src = (process.env['NODE_ENV'] === 'production' ? prodBasePath : devBasePath) + image.value;
       promises.push(this.imagesMap.get(image.key)!.decode());
     });
 
