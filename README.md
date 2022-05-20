@@ -1,6 +1,10 @@
-# brick-blaster
+# Brick Blaster!
 
-This template should help get you started developing with Vue 3 in Vite.
+A super basic but super kick ass breakout style game.
+
+## License
+
+Licensed under the MIT license. Please see `LICENSE` for more details.
 
 ## Recommended IDE Setup
 
