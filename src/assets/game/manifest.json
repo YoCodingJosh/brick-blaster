@@ -2,27 +2,27 @@
   "images": [
     {
       "key": "purpleBrick",
-      "value": "images/PurpleBrick.png"
+      "value": "./game/images/PurpleBrick.png"
     },
     {
       "key": "orangeBrick",
-      "value": "images/OrangeBrick.png"
+      "value": "./game/images/OrangeBrick.png"
     },
     {
       "key": "blueBrick",
-      "value": "images/BlueBrick.png"
+      "value": "./game/images/BlueBrick.png"
     },
     {
       "key": "redBrick",
-      "value": "images/RedBrick.png"
+      "value": "./game/images/RedBrick.png"
     },
     {
       "key": "pinkBrick",
-      "value": "images/PinkBrick.png"
+      "value": "./game/images/PinkBrick.png"
     },
     {
       "key": "background1",
-      "value": "images/Background.png"
+      "value": "./game/images/Background.png"
     }
   ]
 }
