@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { GameAssetService } from '@/services/GameAssetService';
 import { onMounted } from 'vue';
 import { useGameStateStore } from '../stores/game-state';
 
@@ -20,7 +21,8 @@ const gameStateStore = useGameStateStore();
 
 // TODO: Load some stuff!
 onMounted(() => {
-  setTimeout(() => {
+  setTimeout(async () => {
+    await GameAssetService.loadAssets();
     gameStateStore.goToMainMenu();
   }, 2000);
 });
