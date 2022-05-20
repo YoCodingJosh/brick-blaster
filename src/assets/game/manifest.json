@@ -5,6 +5,10 @@
       "value": "./game/images/PurpleBrick.png"
     },
     {
+      "key": "greenBrick",
+      "value": "./game/images/GreenBrick.png"
+    },
+    {
       "key": "orangeBrick",
       "value": "./game/images/OrangeBrick.png"
     },
