@@ -36,7 +36,7 @@ const state = reactive({
 });
 
 function onPlayClicked() {
-  alert('wow!');
+  gameStateStore.goToGame();
 }
 
 function onCreditsClicked() {

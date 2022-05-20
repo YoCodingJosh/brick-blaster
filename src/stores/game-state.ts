@@ -16,6 +16,10 @@ export const useGameStateStore = defineStore({
 
     goToCredits() {
       this.gameState = GameState.Credits;
-    }
-  }
+    },
+
+    goToGame() {
+      this.gameState = GameState.Gameplay;
+    },
+  },
 });

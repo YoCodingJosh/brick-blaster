@@ -3,7 +3,7 @@
     <InitScreen v-if="gameStateStore.gameState == GameState.Init"></InitScreen>
     <MainMenu v-if="gameStateStore.gameState == GameState.MainMenu"></MainMenu>
     <CreditsScreen v-if="gameStateStore.gameState == GameState.Credits"></CreditsScreen>
-    <GameScreen v-show="gameStateStore.gameState == GameState.Gameplay"></GameScreen>
+    <GameScreen v-if="gameStateStore.gameState == GameState.Gameplay"></GameScreen>
   </div>
 </template>
 
