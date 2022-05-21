@@ -1,7 +1,7 @@
 import type { HighScoreData, HighScoreDataEvent } from "@/models/HighScoreData";
 
 export abstract class HighScoreService {
-  public static updateScore(newScore?: Number, newLevelReached?: Number): void {
+  public static updateScore(newScore?: number, newLevelReached?: number): void {
     // TODO:
     this.dispatchScoreUpdate();
   }
@@ -22,4 +22,4 @@ export abstract class HighScoreService {
     localStorage.clear();
     this.dispatchScoreUpdate();
   }
-};
+}

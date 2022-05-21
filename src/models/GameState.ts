@@ -3,4 +3,4 @@ export enum GameState {
   MainMenu = 1,
   Gameplay = 2,
   Credits = 3,
-};
+}

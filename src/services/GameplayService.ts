@@ -1,6 +1,6 @@
 export interface MainMenuCallback {
   (): void;
-};
+}
 
 export abstract class GameplayService {
   private static ctx: CanvasRenderingContext2D;
@@ -49,4 +49,4 @@ export abstract class GameplayService {
     window.removeEventListener('keydown', this.processKeyboardEventThunk);
     window.cancelAnimationFrame(this.renderRequestId);
   }
-};
+}

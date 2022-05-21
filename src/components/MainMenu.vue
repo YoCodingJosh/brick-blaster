@@ -48,7 +48,7 @@ function clearHighScoreData() {
 }
 
 var highScoreEventListener: EventListener = ((event: CustomEvent<HighScoreDataEvent>) => {
-    state.highScoreData = event.detail.jsonDataString !== undefined ? JSON.parse(event.detail.jsonDataString!) : null;
+    state.highScoreData = event.detail.jsonDataString !== undefined ? JSON.parse(event.detail.jsonDataString) : null;
   }) as EventListener;
 
 onMounted(() => {

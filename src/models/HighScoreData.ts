@@ -1,7 +1,8 @@
 export interface HighScoreData {
-    highScore: Number;
-    highestLevelReached: Number;
-};
+    highScore: number;
+    highestLevelReached: number;
+}
+
 export interface HighScoreDataEvent {
     jsonDataString?: string;
-};
+}

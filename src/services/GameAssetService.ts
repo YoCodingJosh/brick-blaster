@@ -8,13 +8,15 @@ export abstract class GameAssetService {
   public static async loadAssets(): Promise<void> {
     const assetData: GameAssetManifest = __assetData;
 
-    let promises: Promise<void>[] = [];
+    const promises: Promise<void>[] = [];
 
     assetData.images.forEach(async (image) => {
-      this.imagesMap.set(image.key, new Image());
-
-      this.imagesMap.get(image.key)!.src = image.value;
-      promises.push(this.imagesMap.get(image.key)!.decode());
+      const imageElement = new Image();
+      
+      imageElement.src = image.value;
+      promises.push(imageElement.decode());
+      
+      this.imagesMap.set(image.key, imageElement);
     });
 
     await Promise.all(promises);
@@ -23,4 +25,4 @@ export abstract class GameAssetService {
   public static fetchImage(id: string): HTMLImageElement | undefined {
     return this.imagesMap.get(id);
   }
-};
+}
