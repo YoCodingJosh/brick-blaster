@@ -19,7 +19,6 @@ import { useGameStateStore } from '../stores/game-state';
 
 const gameStateStore = useGameStateStore();
 
-// TODO: Load some stuff!
 onMounted(() => {
   setTimeout(async () => {
     await GameAssetService.loadAssets();
