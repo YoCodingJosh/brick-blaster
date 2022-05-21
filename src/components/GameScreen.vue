@@ -14,13 +14,13 @@ function goToMainMenu() {
 }
 
 onMounted(() => {
-  let canvas = <HTMLCanvasElement>document.getElementById("gameCanvas");
+  let canvas = <HTMLCanvasElement>document.getElementById("gameCanvas")!;
 
-  GameplayService.start(canvas.getContext('2d')!);
+  GameplayService.start(canvas.getContext('2d')!, goToMainMenu);
 });
 
 onUnmounted(() => {
-
+  GameplayService.stop();
 });
 </script>
 
