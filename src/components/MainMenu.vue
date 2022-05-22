@@ -23,9 +23,9 @@
 
 <script setup lang="ts">
 import { HighScoreService } from '@/services/HighScoreService';
-import { computed, onMounted, onUnmounted, reactive } from 'vue';
+import { onMounted, onUnmounted, reactive } from 'vue';
 
-import type { HighScoreData, HighScoreDataEvent } from '../models/HighScoreData';
+import type { HighScoreDataEvent } from '../models/HighScoreData';
 
 import { useGameStateStore } from '../stores/game-state';
 
@@ -77,6 +77,10 @@ onUnmounted(() => {
 .menuList li a {
   text-decoration: none;
   font-size: xx-large;
+}
+
+.menuList li a:hover {
+  color: violet;
 }
 
 .stats h3 {

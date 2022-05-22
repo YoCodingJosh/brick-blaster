@@ -1,12 +1,13 @@
-export interface MainMenuCallback {
-  (): void;
+interface PauseGameCallback {
+  (): void; 
 }
 
 export abstract class GameplayService {
   private static ctx: CanvasRenderingContext2D;
   private static renderRequestId: number;
   private static processKeyboardEventThunk: (e: KeyboardEvent) => void;
-  private static goBackToMainMenu: MainMenuCallback;
+  private static isPaused: boolean;
+  private static pauseGame: PauseGameCallback;
 
   private static processFrame() {
     this.ctx.fillStyle = 'rgb(200, 0, 0)';
@@ -19,23 +20,24 @@ export abstract class GameplayService {
   }
 
   private static processKeyboardInput(e: KeyboardEvent): void {
-    if (e.defaultPrevented) {
+    if (e.defaultPrevented || this.isPaused) {
       return;
     }
 
     switch (e.code) {
       case 'Escape':
-        // TODO: Pause
-        this.goBackToMainMenu();
+        this.isPaused = true;
+        this.pauseGame();
         break;
       default:
         return;
     }
   }
 
-  public static start(ctx: CanvasRenderingContext2D, mainMenuCallback: MainMenuCallback) {
+  public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback) {
     this.ctx = ctx;
-    this.goBackToMainMenu = mainMenuCallback;
+    this.isPaused = false;
+    this.pauseGame = pauseCallback;
 
     // Set up input handling.
     this.processKeyboardEventThunk = this.processKeyboardInput.bind(this);
@@ -48,5 +50,9 @@ export abstract class GameplayService {
   public static stop() {
     window.removeEventListener('keydown', this.processKeyboardEventThunk);
     window.cancelAnimationFrame(this.renderRequestId);
+  }
+
+  public static unpause() {
+    this.isPaused = false;
   }
 }
