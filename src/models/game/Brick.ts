@@ -1,9 +1,13 @@
-export class Brick {
-    x = 0;
-    y = 0;
+import { BrickType} from './BrickType';
 
-    Brick(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-    }
+export class Brick {
+  x: number;
+  y: number;
+  type: BrickType;
+
+  constructor(x: number = 0, y: number = 0, type: BrickType = BrickType.Normal) {
+    this.x = x;
+    this.y = y;
+    this.type = type;
+  }
 }
