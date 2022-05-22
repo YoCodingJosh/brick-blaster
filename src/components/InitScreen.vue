@@ -23,7 +23,7 @@ onMounted(() => {
   setTimeout(async () => {
     await GameAssetService.loadAssets();
     gameStateStore.goToMainMenu();
-  }, 2000);
+  }, 1250);
 });
 </script>
 
