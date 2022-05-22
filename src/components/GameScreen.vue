@@ -54,10 +54,12 @@ onUnmounted(() => {
 
 .highScoreText {
   float: right;
+  font-size: 1.5em;
 }
 
 .scoreText {
   float: left;
+  font-size: 1.5em;
 }
 
 .pauseButton {
@@ -69,6 +71,6 @@ onUnmounted(() => {
 
 .scorePanel {
   display: block;
-  height: 2em;
+  height: 2.5em;
 }
 </style>

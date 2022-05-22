@@ -2,7 +2,7 @@
   <div>
     <div class="fadeMe"></div>
     <div class="pauseMenu">
-      <h2>Paused</h2>
+      <h2 class="flipY">Paused</h2>
       <ul class="menuList">
         <li><a href="#" @click.prevent="props.resumeGameFunction!()">Resume</a></li>
         <li><a href="#" @click.prevent="props.mainMenuFunction!()">Quit Game</a></li>
@@ -66,5 +66,39 @@ const props = defineProps({
 
 .menuList li a:hover {
   color: violet;
+}
+
+/* flipY class and keyframes*/
+.flipY {
+  animation-name: spin, depth;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 3s;
+}
+@keyframes spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(-360deg);
+  }
+}
+@keyframes depth {
+  0% {
+    text-shadow: 0 0 black;
+  }
+  25% {
+    text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black;
+  }
+  50% {
+    text-shadow: 0 0 black;
+  }
+  75% {
+    text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black,
+      -5px 0 black;
+  }
+  100% {
+    text-shadow: 0 0 black;
+  }
 }
 </style>
