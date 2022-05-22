@@ -75,30 +75,66 @@ const props = defineProps({
   animation-iteration-count: infinite;
   animation-duration: 3s;
 }
+
 @keyframes spin {
   0% {
     transform: rotateY(0deg);
   }
+
   100% {
     transform: rotateY(-360deg);
   }
 }
+
 @keyframes depth {
   0% {
-    text-shadow: 0 0 black;
+    text-shadow: 0 0 white;
   }
+
   25% {
-    text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black;
+    text-shadow: 1px 0 white, 2px 0 white, 3px 0 white, 4px 0 white, 5px 0 white;
   }
+
   50% {
-    text-shadow: 0 0 black;
+    text-shadow: 0 0 white;
   }
+
   75% {
-    text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black,
-      -5px 0 black;
+    text-shadow: -1px 0 white, -2px 0 white, -3px 0 white, -4px 0 white,
+      -5px 0 white;
   }
+
   100% {
-    text-shadow: 0 0 black;
+    text-shadow: 0 0 white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .pauseMenu {
+    background: lightgray;
+  }
+
+  @keyframes depth {
+    0% {
+      text-shadow: 0 0 black;
+    }
+
+    25% {
+      text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black;
+    }
+
+    50% {
+      text-shadow: 0 0 black;
+    }
+
+    75% {
+      text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black,
+        -5px 0 black;
+    }
+
+    100% {
+      text-shadow: 0 0 black;
+    }
   }
 }
 </style>
