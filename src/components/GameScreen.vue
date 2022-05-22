@@ -1,5 +1,11 @@
 <template>
-  <canvas id="gameCanvas"></canvas>
+  <div>
+    <div>
+      <span class="highScoreText">High Score: 0</span>
+      <span class="scoreText">0</span>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -28,5 +34,13 @@ onUnmounted(() => {
 #gameCanvas {
   width: 100%;
   height: 100%;
+}
+
+.highScoreText {
+  float: right;
+}
+
+.scoreText {
+  float: left;
 }
 </style>
