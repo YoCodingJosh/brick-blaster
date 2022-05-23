@@ -16,6 +16,23 @@ const props = defineProps({
   resumeGameFunction: Function,
   mainMenuFunction: Function,
 });
+
+function processKeyboardInput(e: KeyboardEvent) {
+  if (e.defaultPrevented) {
+    return;
+  }
+
+  switch (e.code) {
+    case 'Escape':
+      window.removeEventListener('keydown', processKeyboardInput);
+      props.resumeGameFunction!()
+      break;
+    default:
+      return;
+  }
+}
+
+window.addEventListener('keydown', processKeyboardInput);
 </script>
 
 <style scoped>
