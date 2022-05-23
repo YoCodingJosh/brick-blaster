@@ -23,6 +23,7 @@ const state = reactive({
 });
 
 function pauseGame() {
+  GameplayService.pause();
   state.isPaused = true;
 }
 
@@ -38,6 +39,10 @@ function goToMainMenu() {
 onMounted(() => {
   let canvas = <HTMLCanvasElement>document.getElementById("gameCanvas")!;
 
+  // TODO: Calculate the proper screen dimensions.
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight * 2;
+
   GameplayService.start(canvas.getContext('2d')!, pauseGame);
 });
 
@@ -49,7 +54,6 @@ onUnmounted(() => {
 <style scoped>
 #gameCanvas {
   width: 100%;
-  height: 100%;
 }
 
 .highScoreText {
