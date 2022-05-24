@@ -22,7 +22,7 @@ export abstract class GameAssetService {
     await Promise.all(promises);
   }
 
-  public static fetchImage(id: string): HTMLImageElement | undefined {
-    return this.imagesMap.get(id);
+  public static fetchImage(id: string): HTMLImageElement {
+    return this.imagesMap.get(id)!;
   }
 }

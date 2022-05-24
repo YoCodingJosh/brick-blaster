@@ -18,7 +18,7 @@ export abstract class GameplayService {
   private static currentLevel: number;
 
   private static processFrame() {
-    var pattern = this.ctx.createPattern(GameAssetService.fetchImage('background1')!, 'repeat')!;
+    var pattern = this.ctx.createPattern(GameAssetService.fetchImage('background1'), 'repeat')!;
     this.ctx.fillStyle = pattern;
     this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
