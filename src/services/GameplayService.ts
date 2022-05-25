@@ -1,3 +1,6 @@
+import { Background } from "@/models/game/Background";
+import { Ball } from "@/models/game/Ball";
+import { Constants as GameConstants } from "@/models/game/Constants";
 import type { Level } from "@/models/game/Level";
 import { GameAssetService } from "./GameAssetService";
 import { LevelGenerationService } from "./internal/LevelGenerationService";
@@ -17,16 +20,28 @@ export abstract class GameplayService {
   private static level: Level;
   private static currentLevel: number;
 
+  private static background: Background;
+  private static ball: Ball;
+
+  private static nowTime: number;
+  private static thenTime = performance.now();
+  private static frameInterval = 1000 / GameConstants.targetFrameRate;
+  private static deltaTime: number;
+
   private static processFrame() {
-    var pattern = this.ctx.createPattern(GameAssetService.fetchImage('background1'), 'repeat')!;
-    this.ctx.fillStyle = pattern;
-    this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.nowTime = performance.now();
+    this.deltaTime = this.nowTime - this.thenTime;
+    this.thenTime = this.nowTime;
 
-    this.ctx.fillStyle = 'rgb(200, 0, 0)';
-    this.ctx.fillRect(10, 10, 50, 50);
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
-    this.ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-    this.ctx.fillRect(30, 30, 50, 50);
+    this.background.draw(this.ctx, this.canvasWidth, this.canvasHeight);
+
+    if (!this.isPaused) {
+      this.ball.update(0, this.canvasWidth, this.canvasHeight);
+    }
+
+    this.ball.draw(this.ctx);
 
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
   }
@@ -60,6 +75,8 @@ export abstract class GameplayService {
     // Set up the first level.
     this.currentLevel = 1;
     this.level = LevelGenerationService.generate(this.currentLevel);
+    this.background = new Background(this.ctx, 'background1', 'repeat');
+    this.ball = new Ball(100, 100);
 
     // Start rendering.
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
