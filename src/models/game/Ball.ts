@@ -1,4 +1,5 @@
 import { Constants } from "./Constants";
+import type { Player } from "./Player";
 
 export class Ball {
   x: number;
@@ -20,11 +21,18 @@ export class Ball {
     ctx.closePath();
   }
 
-  public update(deltaTime: number, canvasWidth: number, canvasHeight: number) {
+  public update(deltaTime: number, canvasWidth: number, canvasHeight: number, player: Player) {
+    // TODO: Make this better
+    if (this.y + this.dY + (2 * Constants.ballRadius) > player.y + Constants.ballSpeed &&
+      this.x + Constants.ballRadius > player.x &&
+      this.x + Constants.ballRadius < player.x + Constants.playerWidth) {
+        this.dY *= -1;
+    }
+
     if (this.x + this.dX > canvasWidth - Constants.ballRadius || this.x + this.dX < Constants.ballRadius) {
       this.dX = -this.dX;
     }
-    
+
     if (this.y + this.dY > canvasHeight - Constants.ballRadius || this.y + this.dY < Constants.ballRadius) {
       this.dY = -this.dY;
     }

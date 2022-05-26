@@ -45,7 +45,7 @@ export abstract class GameplayService {
     this.background.draw(this.ctx, this.canvasWidth, this.canvasHeight);
 
     if (!this.isPaused) {
-      this.ball.update(1, this.canvasWidth, this.canvasHeight);
+      this.ball.update(1, this.canvasWidth, this.canvasHeight, this.player);
       this.player.update(1, this.canvasWidth);
     }
 
