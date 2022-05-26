@@ -3,7 +3,9 @@ import { Ball } from "@/models/game/Ball";
 import { Constants as GameConstants } from "@/models/game/Constants";
 import type { Level } from "@/models/game/Level";
 import { Player } from "@/models/game/Player";
+import type { HighScoreData } from "@/models/HighScoreData";
 import { GameAssetService } from "./GameAssetService";
+import { HighScoreService } from "./HighScoreService";
 import { LevelGenerationService } from "./internal/LevelGenerationService";
 
 interface PauseGameCallback {
@@ -21,6 +23,8 @@ export abstract class GameplayService {
   private static pauseGame: PauseGameCallback;
   private static level: Level;
   private static currentLevel: number;
+  private static highScoreData: HighScoreData;
+  private static currentScoreData: HighScoreData;
 
   private static background: Background;
   private static ball: Ball;
@@ -45,6 +49,16 @@ export abstract class GameplayService {
       this.player.update(1, this.canvasWidth);
     }
 
+    if (this.currentScoreData.highScore > this.highScoreData.highScore) {
+      HighScoreService.updateScore(this.currentScoreData.highScore);
+      this.highScoreData.highScore = this.currentScoreData.highScore;
+    }
+
+    if (this.currentScoreData.highestLevelReached > this.highScoreData.highestLevelReached) {
+      HighScoreService.updateScore(undefined, this.currentScoreData.highestLevelReached);
+      this.highScoreData.highestLevelReached = this.currentLevel;
+    }
+
     this.ball.draw(this.ctx);
     this.player.draw(this.ctx);
 
@@ -60,6 +74,10 @@ export abstract class GameplayService {
       case 'Escape':
         this.isPaused = true;
         this.pauseGame();
+        break;
+      case 'Space':
+        // make it rain (temporarily lmao)
+        this.currentScoreData.highScore += GameConstants.brickDestroyPoints;
         break;
       default:
         this.player.processKeyboardDownInput(e);
@@ -79,12 +97,15 @@ export abstract class GameplayService {
     }
   }
 
-  public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback) {
+  public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback, highScoreData: HighScoreData, currentScoreData: HighScoreData) {
     this.ctx = ctx;
     this.isPaused = false;
     this.pauseGame = pauseCallback;
     this.canvasWidth = ctx.canvas.width;
     this.canvasHeight = ctx.canvas.height;
+
+    this.highScoreData = highScoreData;
+    this.currentScoreData = currentScoreData;
 
     // Set up input handling.
     this.processKeyDownEventThunk = this.processKeyboardDownInput.bind(this);
@@ -94,6 +115,7 @@ export abstract class GameplayService {
 
     // Set up the level.
     this.currentLevel = 1;
+    this.currentScoreData.highestLevelReached = this.currentLevel;
     this.level = LevelGenerationService.generate(this.currentLevel);
     this.background = new Background(this.ctx, 'background1', 'repeat');
     this.ball = new Ball(100, 100);
@@ -115,5 +137,12 @@ export abstract class GameplayService {
 
   public static unpause() {
     this.isPaused = false;
+  }
+
+  public static getCurrentScoreData(): HighScoreData {
+    return this.currentScoreData ?? {
+      highScore: 0,
+      highestLevelReached: 0,
+    };
   }
 }

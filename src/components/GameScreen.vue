@@ -3,14 +3,15 @@
     <PauseScreen v-if="state.isPaused" :resume-game-function="resumeGame" :main-menu-function="goToMainMenu"></PauseScreen>
     <div class="scorePanel">
       <img class="pauseButton" @click.prevent="pauseGame()" src="@/assets/game/PauseButton.png">
-      <span class="highScoreText">High Score: 0</span>
-      <span class="scoreText">0</span>
+      <span class="highScoreText">High Score: {{state.highScore.highScore}}</span>
+      <span class="scoreText">{{state.currentScore.highScore}}</span>
     </div>
     <canvas id="gameCanvas"></canvas>
   </div>
 </template>
 
 <script setup lang="ts">
+import { HighScoreService } from '@/services/HighScoreService';
 import { GameplayService } from '@/services/GameplayService';
 import { useGameStateStore } from '../stores/game-state';
 import { onMounted, onUnmounted, reactive } from 'vue';
@@ -20,6 +21,8 @@ const gameStateStore = useGameStateStore();
 
 const state = reactive({
   isPaused: false,
+  highScore: HighScoreService.getHighScore(),
+  currentScore: HighScoreService.zeroScoreData(),
 });
 
 function pauseGame() {
@@ -42,7 +45,7 @@ onMounted(() => {
   canvas.width = canvas.offsetWidth;
   canvas.height = document.documentElement.clientHeight - document.getElementsByClassName('scorePanel')[0].clientHeight - 10;
 
-  GameplayService.start(canvas.getContext('2d')!, pauseGame);
+  GameplayService.start(canvas.getContext('2d')!, pauseGame, state.highScore, state.currentScore);
 });
 
 onUnmounted(() => {

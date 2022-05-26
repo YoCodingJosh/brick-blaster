@@ -5,4 +5,5 @@ export abstract class Constants {
   static readonly playerWidth = 100;
   static readonly playerHeight = 25;
   static readonly playerMoveSpeed = 2.5;
+  static readonly brickDestroyPoints = 10;
 }
