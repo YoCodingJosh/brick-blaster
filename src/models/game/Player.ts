@@ -24,6 +24,9 @@ export class Player {
     }
     else if(e.key == "Left" || e.key == "ArrowLeft") {
       this.isMovingLeft = true;
+    } else {
+      this.isMovingLeft = false;
+      this.isMovingRight = false;
     }
   }
 
@@ -33,6 +36,9 @@ export class Player {
     }
     else if(e.key == "Left" || e.key == "ArrowLeft") {
       this.isMovingLeft = false;
+    } else {
+      this.isMovingLeft = false;
+      this.isMovingRight = false;
     }
   }
 
