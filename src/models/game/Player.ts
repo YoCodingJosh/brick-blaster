@@ -6,7 +6,7 @@ export class Player {
   isMovingLeft = false;
   isMovingRight = false;
 
-  constructor(x: number, y: number, ) {
+  constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
@@ -21,11 +21,10 @@ export class Player {
   processKeyboardDownInput(e: KeyboardEvent) {
     if (e.key == "Right" || e.key == "ArrowRight") {
       this.isMovingRight = true;
+      this.isMovingLeft = false;
     }
     else if(e.key == "Left" || e.key == "ArrowLeft") {
       this.isMovingLeft = true;
-    } else {
-      this.isMovingLeft = false;
       this.isMovingRight = false;
     }
   }
