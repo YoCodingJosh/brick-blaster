@@ -23,8 +23,8 @@ export class Ball {
 
   public update(deltaTime: number, canvasWidth: number, canvasHeight: number, player: Player) {
     // TODO: flip dX depending on which side the ball hits
-    if (this.y + this.dY + Constants.ballRadius >= player.y + Constants.ballSpeed &&
-      this.x + Constants.ballRadius > player.x && this.x + Constants.ballRadius < player.x + Constants.playerWidth) {
+    if (this.y + this.dY + Constants.ballRadius >= player.y + Constants.ballSpeed && this.x + Constants.ballRadius > player.x && this.x + Constants.ballRadius < player.x + Constants.playerWidth) {
+      this.dX = (Constants.playerWidth - (this.x - Constants.playerWidth) > Constants.playerWidth / 2) ? -Constants.ballSpeed : Constants.ballSpeed;
       this.dY *= -1;
     }
 
