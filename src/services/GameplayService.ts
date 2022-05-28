@@ -47,6 +47,12 @@ export abstract class GameplayService {
     if (!this.isPaused) {
       this.ball.update(1, this.canvasWidth, this.canvasHeight, this.player);
       this.player.update(1, this.canvasWidth);
+
+      if (this.ball.y + this.ball.dX >= this.player.y + GameConstants.playerHeight) {
+        // TODO: Reset ball properly and process lose a life logic.
+        this.ball.x = 100;
+        this.ball.y = 100;
+      }
     }
 
     if (this.currentScoreData.highScore > this.highScoreData.highScore) {
