@@ -93,8 +93,6 @@ export abstract class GameplayService {
         break;
     }
 
-    // this.player.processKeyboardDownInput(e);
-
     this.player.processKeyboardEvent(this.keyboard);
   }
 
@@ -107,7 +105,6 @@ export abstract class GameplayService {
       pressed: false,
     });
 
-    // this.player.processKeyboardUpInput(e);
     this.player.processKeyboardEvent(this.keyboard);
   }
 
