@@ -8,6 +8,8 @@ export class Ball {
   dX = Constants.ballSpeed;
   dY = -Constants.ballSpeed;
 
+  readonly dXRange = Constants.ballSpeed * 2;
+
   constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
@@ -22,10 +24,15 @@ export class Ball {
   }
 
   public update(deltaTime: number, canvasWidth: number, canvasHeight: number, player: Player) {
-    // TODO: flip dX depending on which side the ball hits
-    if (this.y + this.dY + Constants.ballRadius >= player.y + Constants.ballSpeed && this.x + Constants.ballRadius > player.x && this.x + Constants.ballRadius < player.x + Constants.playerWidth) {
-      this.dX = (Constants.playerWidth - (this.x - Constants.playerWidth) > Constants.playerWidth / 2) ? -Constants.ballSpeed : Constants.ballSpeed;
-      this.dY *= -1;
+    if (this.x + Constants.ballRadius >= player.x &&
+      this.x - Constants.ballRadius <= player.x + Constants.playerWidth &&
+      this.y + (Constants.ballRadius / 2) >= player.y) {
+      // detects where on the paddle the ball has collided
+      // and deflects the ball in the appropriate direction
+      var percentage = (this.x - player.x) / Constants.playerWidth;
+      this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
+
+      this.dY = -this.dY;
     }
 
     if (this.x + this.dX > canvasWidth - Constants.ballRadius || this.x + this.dX < Constants.ballRadius) {
