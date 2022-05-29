@@ -1,4 +1,5 @@
 import { Constants } from "./Constants";
+import type { Keyboard } from "./Keyboard";
 
 export class Player {
   x: number;
@@ -18,23 +19,13 @@ export class Player {
     ctx.closePath();
   }
 
-  processKeyboardDownInput(e: KeyboardEvent) {
-    if (e.key == "Right" || e.key == "ArrowRight") {
+  processKeyboardEvent(keyboard: Keyboard) {
+    if (keyboard.isKeyPressed('Right') || keyboard.isKeyPressed('ArrowRight')) {
       this.isMovingRight = true;
       this.isMovingLeft = false;
-    }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
+    } else if (keyboard.isKeyPressed('Left') || keyboard.isKeyPressed('ArrowLeft')) {
       this.isMovingLeft = true;
       this.isMovingRight = false;
-    }
-  }
-
-  processKeyboardUpInput(e: KeyboardEvent) {
-    if (e.key == "Right" || e.key == "ArrowRight") {
-      this.isMovingRight = false;
-    }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
-      this.isMovingLeft = false;
     } else {
       this.isMovingLeft = false;
       this.isMovingRight = false;
@@ -56,7 +47,7 @@ export class Player {
       if (this.x + (Constants.playerWidth + Constants.playerMoveSpeed) > canvasWidth) {
         this.x = canvasWidth - Constants.playerWidth;
       }
-    } else if (this.isMovingLeft){
+    } else if (this.isMovingLeft) {
       this.x -= Constants.playerMoveSpeed;
 
       if (this.x < 0) {

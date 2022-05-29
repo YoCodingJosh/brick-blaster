@@ -1,10 +1,10 @@
 import { Background } from "@/models/game/Background";
 import { Ball } from "@/models/game/Ball";
-import { Constants as GameConstants } from "@/models/game/Constants";
+import { Constants } from "@/models/game/Constants";
+import { Keyboard } from "@/models/game/Keyboard";
 import type { Level } from "@/models/game/Level";
 import { Player } from "@/models/game/Player";
 import type { HighScoreData } from "@/models/HighScoreData";
-import { GameAssetService } from "./GameAssetService";
 import { HighScoreService } from "./HighScoreService";
 import { LevelGenerationService } from "./internal/LevelGenerationService";
 
@@ -32,8 +32,9 @@ export abstract class GameplayService {
 
   private static nowTime: number;
   private static thenTime = performance.now();
-  private static frameInterval = 1000 / GameConstants.targetFrameRate;
+  private static frameInterval = 1000 / Constants.targetFrameRate;
   private static deltaTime: number;
+  private static keyboard: Keyboard;
 
   private static processFrame() {
     this.nowTime = performance.now();
@@ -48,7 +49,7 @@ export abstract class GameplayService {
       this.ball.update(1, this.canvasWidth, this.canvasHeight, this.player);
       this.player.update(1, this.canvasWidth);
 
-      if (this.ball.y + this.ball.dX >= this.player.y + GameConstants.playerHeight) {
+      if (this.ball.y + this.ball.dY + Constants.ballRadius >= this.player.y + this.ball.dY + (Constants.ballRadius * 2) + Constants.playerHeight) {
         // TODO: Reset ball properly and process lose a life logic.
         this.ball.x = 100;
         this.ball.y = 100;
@@ -76,19 +77,25 @@ export abstract class GameplayService {
       return;
     }
 
+    this.keyboard.set(e.code, {
+      pressed: true,
+    });
+
+    if (this.keyboard.isKeyPressed('Space')) {
+      // make it rain (temporarily lmao)
+      this.currentScoreData.highScore += Constants.brickDestroyPoints;
+    }
+
     switch (e.code) {
       case 'Escape':
         this.isPaused = true;
         this.pauseGame();
         break;
-      case 'Space':
-        // make it rain (temporarily lmao)
-        this.currentScoreData.highScore += GameConstants.brickDestroyPoints;
-        break;
-      default:
-        this.player.processKeyboardDownInput(e);
-        break;
     }
+
+    // this.player.processKeyboardDownInput(e);
+
+    this.player.processKeyboardEvent(this.keyboard);
   }
 
   private static processKeyboardUpInput(e: KeyboardEvent): void {
@@ -96,11 +103,12 @@ export abstract class GameplayService {
       return;
     }
 
-    switch (e.code) {
-      default:
-        this.player.processKeyboardUpInput(e);
-        break;
-    }
+    this.keyboard.set(e.code, {
+      pressed: false,
+    });
+
+    // this.player.processKeyboardUpInput(e);
+    this.player.processKeyboardEvent(this.keyboard);
   }
 
   public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback, highScoreData: HighScoreData, currentScoreData: HighScoreData) {
@@ -112,6 +120,8 @@ export abstract class GameplayService {
 
     this.highScoreData = highScoreData;
     this.currentScoreData = currentScoreData;
+
+    this.keyboard = new Keyboard();
 
     // Set up input handling.
     this.processKeyDownEventThunk = this.processKeyboardDownInput.bind(this);
@@ -125,13 +135,15 @@ export abstract class GameplayService {
     this.level = LevelGenerationService.generate(this.currentLevel);
     this.background = new Background(this.ctx, 'background1', 'repeat');
     this.ball = new Ball(100, 100);
-    this.player = new Player((this.canvasWidth - GameConstants.playerWidth) / 2, (this.canvasHeight / 1.5) - (GameConstants.playerHeight * 2));
+    this.player = new Player((this.canvasWidth - Constants.playerWidth) / 2, (this.canvasHeight / 1.5) - (Constants.playerHeight * 2));
 
     // Start rendering.
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
   }
 
   public static stop() {
+    this.keyboard.clear();
+
     window.removeEventListener('keydown', this.processKeyDownEventThunk);
     window.removeEventListener('keyup', this.processKeyUpEventThunk);
     window.cancelAnimationFrame(this.renderRequestId);
