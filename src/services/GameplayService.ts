@@ -50,9 +50,9 @@ export abstract class GameplayService {
       this.player.update(1, this.canvasWidth);
 
       if (this.ball.y + this.ball.dY + Constants.ballRadius >= this.player.y + this.ball.dY + (Constants.ballRadius * 2) + Constants.playerHeight) {
-        // TODO: Reset ball properly and process lose a life logic.
-        this.ball.x = 100;
-        this.ball.y = 100;
+        // TODO: Reset ball properly and implement lose a life logic.
+        this.ball.x = 150;
+        this.ball.y = 300;
       }
     }
 
@@ -68,6 +68,7 @@ export abstract class GameplayService {
 
     this.ball.draw(this.ctx);
     this.player.draw(this.ctx);
+    this.level.draw(this.ctx);
 
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
   }
@@ -129,9 +130,9 @@ export abstract class GameplayService {
     // Set up the level.
     this.currentLevel = 1;
     this.currentScoreData.highestLevelReached = this.currentLevel;
-    this.level = LevelGenerationService.generate(this.currentLevel);
+    this.level = LevelGenerationService.generate(this.currentLevel, this.canvasWidth, this.canvasHeight);
     this.background = new Background(this.ctx, 'background1', 'repeat');
-    this.ball = new Ball(100, 100);
+    this.ball = new Ball(150, 300);
     this.player = new Player((this.canvasWidth - Constants.playerWidth) / 2, (this.canvasHeight / 1.5) - (Constants.playerHeight * 2));
 
     // Start rendering.

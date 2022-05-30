@@ -1,5 +1,6 @@
 import { GameAssetService } from '@/services/GameAssetService';
 import { BrickType} from './BrickType';
+import { Constants } from './Constants';
 
 export class Brick {
   x: number;
@@ -15,6 +16,6 @@ export class Brick {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-
+    ctx.drawImage(this.sprite, this.x, this.y, Constants.brickWidth, Constants.brickHeight);
   }
 }
