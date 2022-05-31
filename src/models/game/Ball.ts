@@ -9,11 +9,14 @@ export class Ball {
   dX = Constants.ballSpeed;
   dY = -Constants.ballSpeed;
 
+  isStuck: boolean;
+
   readonly dXRange = Constants.ballSpeed * 2;
 
-  constructor(x = 0, y = 0) {
+  constructor(x = 0, y = 0, stuck = false) {
     this.x = x;
     this.y = y;
+    this.isStuck = stuck;
   }
 
   public draw(ctx: CanvasRenderingContext2D) {
@@ -25,6 +28,8 @@ export class Ball {
   }
 
   public update(deltaTime: number, canvasWidth: number, canvasHeight: number) {
+    if (this.isStuck) return;
+
     if (this.x + this.dX > canvasWidth - Constants.ballRadius || this.x + this.dX < Constants.ballRadius) {
       this.dX = -this.dX;
     }
@@ -51,9 +56,6 @@ export class Ball {
   }
 
   public handleBrickCollision(brick: Brick): boolean {
-    // let xCollision = this.x + Constants.ballRadius >= brick.x && this.x - Constants.ballRadius <= brick.x - Constants.brickWidth;
-    // let yCollision = this.y + Constants.ballRadius >= brick.y && this.y - Constants.ballRadius <= brick.y - Constants.brickHeight;
-
     if (this.x - Constants.ballRadius <= brick.x + Constants.brickWidth &&
       this.x + Constants.ballRadius >= brick.x &&
       this.y - Constants.ballRadius <= brick.y + Constants.brickHeight &&
@@ -62,6 +64,10 @@ export class Ball {
       this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
 
       this.dY = -this.dY;
+
+      // So we don't accidentally break multiple bricks.
+      this.x += this.dX;
+      this.y += this.dY;
 
       return true
     }

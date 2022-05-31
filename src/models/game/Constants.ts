@@ -10,5 +10,5 @@ export abstract class Constants {
   static readonly brickWidth = 75;
   static readonly brickHeight = 30;
   static readonly levelPaddingX = 20;
-  static readonly levelStartY = 25;
+  static readonly levelStartY = 50;
 }

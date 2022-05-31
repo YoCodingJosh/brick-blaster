@@ -53,11 +53,16 @@ export abstract class GameplayService {
 
       if (this.ball.y + this.ball.dY + Constants.ballRadius >= this.player.y + this.ball.dY + (Constants.ballRadius * 2) + Constants.playerHeight) {
         // TODO: Reset ball properly and implement lose a life logic.
-        this.ball.x = 150;
-        this.ball.y = 300;
+
+        this.ball.x = this.player.x + (Constants.playerWidth / 2) + (Constants.ballRadius / 2);
+        this.ball.y = this.player.y - Constants.ballRadius - 1;
       }
 
       this.level.update(1, this.ball, this.currentScoreData);
+
+      if (this.level.isComplete) {
+        this.startNextLevel();
+      }
     }
 
     if (this.currentScoreData.highScore > this.highScoreData.highScore) {
@@ -108,6 +113,15 @@ export abstract class GameplayService {
     this.player.processKeyboardEvent(this.keyboard);
   }
 
+  private static startNextLevel() {
+    this.currentLevel++;
+    this.currentScoreData.highestLevelReached = this.currentLevel;
+    this.level = LevelGenerationService.generate(this.currentLevel, this.canvasWidth, this.canvasHeight);
+    this.background = new Background(this.ctx, 'background1', 'repeat');
+    this.player = new Player((this.canvasWidth - Constants.playerWidth) / 2, (this.canvasHeight / 1.5) - (Constants.playerHeight * 2));
+    this.ball = new Ball(this.player.x + (Constants.playerWidth / 2) + (Constants.ballRadius / 2), this.player.y - Constants.ballRadius - 1);
+  }
+
   public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback, highScoreData: HighScoreData, currentScoreData: HighScoreData) {
     this.ctx = ctx;
     this.isPaused = false;
@@ -126,13 +140,8 @@ export abstract class GameplayService {
     this.processKeyUpEventThunk = this.processKeyboardUpInput.bind(this);
     window.addEventListener('keyup', this.processKeyUpEventThunk);
 
-    // Set up the level.
-    this.currentLevel = 1;
-    this.currentScoreData.highestLevelReached = this.currentLevel;
-    this.level = LevelGenerationService.generate(this.currentLevel, this.canvasWidth, this.canvasHeight);
-    this.background = new Background(this.ctx, 'background1', 'repeat');
-    this.ball = new Ball(150, 300);
-    this.player = new Player((this.canvasWidth - Constants.playerWidth) / 2, (this.canvasHeight / 1.5) - (Constants.playerHeight * 2));
+    this.currentLevel = 0;
+    this.startNextLevel();
 
     // Start rendering.
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
