@@ -7,6 +7,7 @@ export class Brick {
   y: number;
   type: BrickType;
   sprite: HTMLImageElement;
+  removed = false;
 
   constructor(x: number = 0, y: number = 0, type: BrickType = BrickType.Normal) {
     this.x = x;
@@ -17,5 +18,8 @@ export class Brick {
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.drawImage(this.sprite, this.x, this.y, Constants.brickWidth, Constants.brickHeight);
+  }
+
+  update(deltaTime: number) {
   }
 }

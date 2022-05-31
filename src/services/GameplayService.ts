@@ -46,14 +46,18 @@ export abstract class GameplayService {
     this.background.draw(this.ctx, this.canvasWidth, this.canvasHeight);
 
     if (!this.isPaused) {
-      this.ball.update(1, this.canvasWidth, this.canvasHeight, this.player);
+      this.ball.update(1, this.canvasWidth, this.canvasHeight);
       this.player.update(1, this.canvasWidth);
+
+      this.ball.handlePlayerCollision(this.player);
 
       if (this.ball.y + this.ball.dY + Constants.ballRadius >= this.player.y + this.ball.dY + (Constants.ballRadius * 2) + Constants.playerHeight) {
         // TODO: Reset ball properly and implement lose a life logic.
         this.ball.x = 150;
         this.ball.y = 300;
       }
+
+      this.level.update(1, this.ball, this.currentScoreData);
     }
 
     if (this.currentScoreData.highScore > this.highScoreData.highScore) {
@@ -81,11 +85,6 @@ export abstract class GameplayService {
     this.keyboard.set(e.code, {
       pressed: true,
     });
-
-    if (this.keyboard.isKeyPressed('Space')) {
-      // make it rain (temporarily lmao)
-      this.currentScoreData.highScore += Constants.brickDestroyPoints;
-    }
 
     switch (e.code) {
       case 'Escape':

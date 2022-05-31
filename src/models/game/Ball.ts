@@ -1,3 +1,4 @@
+import type { Brick } from "./Brick";
 import { Constants } from "./Constants";
 import type { Player } from "./Player";
 
@@ -23,18 +24,7 @@ export class Ball {
     ctx.closePath();
   }
 
-  public update(deltaTime: number, canvasWidth: number, canvasHeight: number, player: Player) {
-    if (this.x + Constants.ballRadius >= player.x &&
-      this.x - Constants.ballRadius <= player.x + Constants.playerWidth &&
-      this.y + (Constants.ballRadius / 2) >= player.y) {
-      // detects where on the paddle the ball has collided
-      // and deflects the ball in the appropriate direction
-      var percentage = (this.x - player.x) / Constants.playerWidth;
-      this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
-
-      this.dY = -this.dY;
-    }
-
+  public update(deltaTime: number, canvasWidth: number, canvasHeight: number) {
     if (this.x + this.dX > canvasWidth - Constants.ballRadius || this.x + this.dX < Constants.ballRadius) {
       this.dX = -this.dX;
     }
@@ -45,5 +35,37 @@ export class Ball {
 
     this.x += this.dX;
     this.y += this.dY;
+  }
+
+  public handlePlayerCollision(player: Player) {
+    if (this.x + Constants.ballRadius >= player.x &&
+      this.x - Constants.ballRadius <= player.x + Constants.playerWidth &&
+      this.y + Constants.ballRadius >= player.y) {
+      // detects where on the paddle the ball has collided
+      // and deflects the ball in the appropriate direction
+      var percentage = (this.x - player.x) / Constants.playerWidth;
+      this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
+
+      this.dY = -this.dY;
+    }
+  }
+
+  public handleBrickCollision(brick: Brick): boolean {
+    // let xCollision = this.x + Constants.ballRadius >= brick.x && this.x - Constants.ballRadius <= brick.x - Constants.brickWidth;
+    // let yCollision = this.y + Constants.ballRadius >= brick.y && this.y - Constants.ballRadius <= brick.y - Constants.brickHeight;
+
+    if (this.x - Constants.ballRadius <= brick.x + Constants.brickWidth &&
+      this.x + Constants.ballRadius >= brick.x &&
+      this.y - Constants.ballRadius <= brick.y + Constants.brickHeight &&
+      this.y + Constants.ballRadius >= brick.y) {
+      var percentage = (this.x - brick.x) / Constants.brickWidth;
+      this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
+
+      this.dY = -this.dY;
+
+      return true
+    }
+
+    return false;
   }
 }
