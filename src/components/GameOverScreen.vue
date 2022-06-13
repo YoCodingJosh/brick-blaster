@@ -75,28 +75,67 @@ const props = defineProps({
 
 @keyframes anim-popoutin {
   0% {
-    color: black;
+    color: white;
     transform: scale(0);
     opacity: 0;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
   }
+
   25% {
-    color: red;
+    color: orange;
     transform: scale(2);
     opacity: 1;
     text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
   }
+
   50% {
-    color: black;
+    color: red;
     transform: scale(1);
     opacity: 1;
     text-shadow: 1px 0 0 rgba(0, 0, 0, 0);
   }
+
   100% {
     /* animate nothing to add pause at the end of animation */
     transform: scale(1);
     opacity: 1;
     text-shadow: 1px 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .gameOverMenu {
+    background: lightgray;
+  }
+
+  @keyframes anim-popoutin {
+    0% {
+      color: black;
+      transform: scale(0);
+      opacity: 0;
+      text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    25% {
+      color: orange;
+      transform: scale(2);
+      opacity: 1;
+      text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    50% {
+      color: red;
+      transform: scale(1);
+      opacity: 1;
+      text-shadow: 1px 0 0 rgba(0, 0, 0, 0);
+    }
+
+    100% {
+      /* animate nothing to add pause at the end of animation */
+      transform: scale(1);
+      opacity: 1;
+      text-shadow: 1px 0 0 rgba(0, 0, 0, 0);
+    }
   }
 }
 </style>
