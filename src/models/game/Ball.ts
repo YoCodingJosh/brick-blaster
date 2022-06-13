@@ -10,6 +10,8 @@ export class Ball {
   dY = -Constants.ballSpeed;
 
   isStuck: boolean;
+  isActive: boolean;
+  isVisible: boolean;
 
   readonly dXRange = Constants.ballSpeed * 2;
 
@@ -17,9 +19,14 @@ export class Ball {
     this.x = x;
     this.y = y;
     this.isStuck = stuck;
+
+    this.isActive = true;
+    this.isVisible = true;
   }
 
   public draw(ctx: CanvasRenderingContext2D) {
+    if (!this.isVisible) return;
+
     ctx.beginPath();
     ctx.arc(this.x, this.y, Constants.ballRadius, 0, Math.PI * 2);
     ctx.fillStyle = "#FFFFFF";
@@ -28,7 +35,7 @@ export class Ball {
   }
 
   public update(deltaTime: number, canvasWidth: number, canvasHeight: number) {
-    if (this.isStuck) return;
+    if (this.isStuck || !this.isActive) return;
 
     if (this.x + this.dX > canvasWidth - Constants.ballRadius || this.x + this.dX < Constants.ballRadius) {
       this.dX = -this.dX;

@@ -8,6 +8,9 @@
     </header>
     <main>
       <div class="credit">
+        <p>This game is open source! View the code on <a href="https://github.com/YoCodingJosh/brick-blaster" target="_blank">GitHub</a></p>
+      </div>
+      <div class="credit">
         <h3>Programming, Design, and Art</h3>
         <p>Josh Kennedy</p>
       </div>

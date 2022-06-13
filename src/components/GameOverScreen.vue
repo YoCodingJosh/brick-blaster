@@ -1,10 +1,24 @@
 <template>
+  <div>
+    <div class="fadeMe"></div>
+    <div class="gameOverMenu">
+      <h2 class="pop-outin">Game Over!</h2>
+      <ul class="menuList">
+        <li><a href="#" @click.prevent="props.restartGameFunction!()">Restart</a></li>
+        <li><a href="#" @click.prevent="props.mainMenuFunction!()">Back to Main Menu</a></li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
+const props = defineProps({
+  restartGameFunction: Function,
+  mainMenuFunction: Function,
+});
 </script>
 
-<style>
+<style scoped>
 .fadeMe {
   opacity: 0.5;
   background: #000;
@@ -14,6 +28,44 @@
   top: 0;
   left: 0;
   position: fixed;
+}
+
+.gameOverMenu {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 400px;
+  height: 300px;
+  margin-left: -200px;
+  margin-top: -150px;
+  background: darkslategray;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 11;
+}
+
+.gameOverMenu h2 {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.menuList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuList li {
+  padding-bottom: 15px;
+}
+
+.menuList li a {
+  text-decoration: none;
+  font-size: xx-large;
+}
+
+.menuList li a:hover {
+  color: violet;
 }
 
 /* subtle zoom to attention and then back */

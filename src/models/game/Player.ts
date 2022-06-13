@@ -6,13 +6,19 @@ export class Player {
   y: number;
   isMovingLeft = false;
   isMovingRight = false;
+  isActive: boolean;
+  isVisible: boolean;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+    this.isActive = true;
+    this.isVisible = true;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
+    if (!this.isVisible) return;
+    
     ctx.beginPath();
     ctx.fillStyle = "#DADBC1";
     ctx.fillRect(this.x, this.y, Constants.playerWidth, Constants.playerHeight);
@@ -20,6 +26,8 @@ export class Player {
   }
 
   processKeyboardEvent(keyboard: Keyboard) {
+    if (!this.isActive) return;
+
     if (keyboard.isKeyPressed('Right') || keyboard.isKeyPressed('ArrowRight')) {
       this.isMovingRight = true;
       this.isMovingLeft = false;
@@ -41,6 +49,8 @@ export class Player {
   }
 
   update(deltaTime: number, canvasWidth: number) {
+    if (!this.isActive) return;
+
     if (this.isMovingRight) {
       this.x += Constants.playerMoveSpeed;
 

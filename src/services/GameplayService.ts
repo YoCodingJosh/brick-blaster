@@ -12,6 +12,14 @@ interface PauseGameCallback {
   (): void;
 }
 
+interface LivesUpdateCallback {
+  (lives: number): void;
+}
+
+interface GameOverCallback {
+  (): void;
+}
+
 export abstract class GameplayService {
   private static ctx: CanvasRenderingContext2D;
   private static canvasWidth: number;
@@ -19,12 +27,16 @@ export abstract class GameplayService {
   private static renderRequestId: number;
   private static processKeyDownEventThunk: (e: KeyboardEvent) => void;
   private static processKeyUpEventThunk: (e: KeyboardEvent) => void;
+  private static isRunning: boolean;
   private static isPaused: boolean;
   private static pauseGame: PauseGameCallback;
   private static level: Level;
   private static currentLevel: number;
   private static highScoreData: HighScoreData;
   private static currentScoreData: HighScoreData;
+  private static numLives: number;
+  private static updateLivesCountCallback: LivesUpdateCallback;
+  private static gameOverCallback: GameOverCallback;
 
   private static background: Background;
   private static ball: Ball;
@@ -37,6 +49,8 @@ export abstract class GameplayService {
   private static keyboard: Keyboard;
 
   private static processFrame() {
+    if (!this.isRunning) return;
+    
     this.nowTime = performance.now();
     this.deltaTime = this.nowTime - this.thenTime;
     this.thenTime = this.nowTime;
@@ -52,7 +66,16 @@ export abstract class GameplayService {
       this.ball.handlePlayerCollision(this.player);
 
       if (this.ball.y + this.ball.dY + Constants.ballRadius >= this.player.y + this.ball.dY + (Constants.ballRadius * 2) + Constants.playerHeight) {
-        // TODO: Reset ball properly and implement lose a life logic.
+        this.numLives--;
+
+        if (this.numLives < 0) {
+          this.ball.isActive = false;
+          this.ball.isVisible = false;
+          this.player.isActive = false;
+          this.player.isVisible = false;
+
+          this.gameOverCallback();
+        }
 
         this.ball.x = this.player.x + (Constants.playerWidth / 2) + (Constants.ballRadius / 2);
         this.ball.y = this.player.y - Constants.ballRadius - 1;
@@ -75,9 +98,15 @@ export abstract class GameplayService {
       this.highScoreData.highestLevelReached = this.currentLevel;
     }
 
+    // if (this.currentScoreData.highScore % Constants.extraLifePointsInterval == 0) {
+    //   this.numLives++;
+    // }
+
     this.ball.draw(this.ctx);
     this.player.draw(this.ctx);
     this.level.draw(this.ctx);
+
+    this.updateLivesCountCallback(this.numLives);
 
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
   }
@@ -118,11 +147,11 @@ export abstract class GameplayService {
     this.currentScoreData.highestLevelReached = this.currentLevel;
     this.level = LevelGenerationService.generate(this.currentLevel, this.canvasWidth, this.canvasHeight);
     this.background = new Background(this.ctx, 'background1', 'repeat');
-    this.player = new Player((this.canvasWidth - Constants.playerWidth) / 2, (this.canvasHeight / 1.5) - (Constants.playerHeight * 2));
+    this.player = new Player((this.canvasWidth - Constants.playerWidth) / 2, (this.canvasHeight / 1.25) - (Constants.playerHeight * 2));
     this.ball = new Ball(this.player.x + (Constants.playerWidth / 2) + (Constants.ballRadius / 2), this.player.y - Constants.ballRadius - 1);
   }
 
-  public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback, highScoreData: HighScoreData, currentScoreData: HighScoreData) {
+  public static start(ctx: CanvasRenderingContext2D, pauseCallback: PauseGameCallback, highScoreData: HighScoreData, currentScoreData: HighScoreData, livesUpdateCallback: LivesUpdateCallback, gameOverCallback: GameOverCallback) {
     this.ctx = ctx;
     this.isPaused = false;
     this.pauseGame = pauseCallback;
@@ -131,6 +160,12 @@ export abstract class GameplayService {
 
     this.highScoreData = highScoreData;
     this.currentScoreData = currentScoreData;
+
+    this.numLives = Constants.numberOfLives;
+    this.updateLivesCountCallback = livesUpdateCallback;
+    livesUpdateCallback(this.numLives);
+
+    this.gameOverCallback = gameOverCallback;
 
     this.keyboard = new Keyboard();
 
@@ -143,11 +178,15 @@ export abstract class GameplayService {
     this.currentLevel = 0;
     this.startNextLevel();
 
+    this.isRunning = true;
+
     // Start rendering.
     this.renderRequestId = window.requestAnimationFrame(this.processFrame.bind(this));
   }
 
   public static stop() {
+    this.isRunning = false;
+
     this.keyboard.clear();
 
     window.removeEventListener('keydown', this.processKeyDownEventThunk);

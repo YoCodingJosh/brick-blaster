@@ -11,4 +11,6 @@ export abstract class Constants {
   static readonly brickHeight = 30;
   static readonly levelPaddingX = 20;
   static readonly levelStartY = 50;
+  static readonly numberOfLives = 3;
+  static readonly extraLifePointsInterval = 1000;
 }
