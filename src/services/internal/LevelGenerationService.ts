@@ -5,12 +5,11 @@ import { GameAssetService } from "../GameAssetService";
 
 export abstract class LevelGenerationService {
   public static generate(currentLevel: number, canvasWidth: number, canvasHeight: number): Level {
-    const level = new Level();
-
+    const bricks: Brick[][] = [];
     const levelHeight = 3 * (currentLevel % 4) + ((currentLevel % 3) * 2) + 1;
 
     for (let i = 0; i < levelHeight; i++) {
-      level.bricks[i] = [];
+      bricks[i] = [];
       for (let j = 0; j < Constants.maxLevelWidth; j++) {
         const brick = new Brick();
 
@@ -41,10 +40,10 @@ export abstract class LevelGenerationService {
         brick.y = Constants.levelStartY + (i * Constants.brickHeight);
         brick.x = Constants.levelPaddingX + (j * Constants.brickWidth);
 
-        level.bricks[i][j] = brick;
+        bricks[i][j] = brick;
       }
     }
 
-    return level;
+    return new Level(bricks);
   }
 }

@@ -44,7 +44,6 @@ export abstract class GameplayService {
 
   private static nowTime: number;
   private static thenTime = performance.now();
-  private static frameInterval = 1000 / Constants.targetFrameRate;
   private static deltaTime: number;
   private static keyboard: Keyboard;
 
@@ -63,7 +62,7 @@ export abstract class GameplayService {
       this.ball.update(1, this.canvasWidth, this.canvasHeight);
       this.player.update(1, this.canvasWidth);
 
-      this.ball.handlePlayerCollision(this.player);
+      this.ball.handlePlayerCollision(this.player, 1);
 
       if (this.ball.y + this.ball.dY + Constants.ballRadius >= this.player.y + this.ball.dY + (Constants.ballRadius * 2) + Constants.playerHeight) {
         this.numLives--;

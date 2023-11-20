@@ -40,13 +40,11 @@ export class Player {
     }
   }
 
-  processTouchEvent(e: TouchEvent) {
+  // processTouchEvent(e: TouchEvent) {
+  // }
 
-  }
-
-  processMouseEvent(e: MouseEvent) {
-
-  }
+  // processMouseEvent(e: MouseEvent) {
+  // }
 
   update(deltaTime: number, canvasWidth: number) {
     if (!this.isActive) return;

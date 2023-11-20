@@ -45,36 +45,36 @@ export class Ball {
       this.dY = -this.dY;
     }
 
-    this.x += this.dX;
-    this.y += this.dY;
+    this.x += this.dX * deltaTime;
+    this.y += this.dY * deltaTime;
   }
 
-  public handlePlayerCollision(player: Player) {
+  public handlePlayerCollision(player: Player, deltaTime: number) {
     if (this.x + Constants.ballRadius >= player.x &&
       this.x - Constants.ballRadius <= player.x + Constants.playerWidth &&
       this.y + Constants.ballRadius >= player.y) {
       // detects where on the paddle the ball has collided
       // and deflects the ball in the appropriate direction
-      var percentage = (this.x - player.x) / Constants.playerWidth;
+      const percentage = (this.x - player.x) / Constants.playerWidth;
       this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
 
-      this.dY = -this.dY;
+      this.dY = -this.dY * deltaTime;
     }
   }
 
-  public handleBrickCollision(brick: Brick): boolean {
+  public handleBrickCollision(brick: Brick, deltaTime: number): boolean {
     if (this.x - Constants.ballRadius <= brick.x + Constants.brickWidth &&
       this.x + Constants.ballRadius >= brick.x &&
       this.y - Constants.ballRadius <= brick.y + Constants.brickHeight &&
       this.y + Constants.ballRadius >= brick.y) {
-      var percentage = (this.x - brick.x) / Constants.brickWidth;
+      const percentage = (this.x - brick.x) / Constants.brickWidth;
       this.dX = (percentage * this.dXRange) - (this.dXRange / 2);
 
       this.dY = -this.dY;
 
       // So we don't accidentally break multiple bricks.
-      this.x += this.dX;
-      this.y += this.dY;
+      this.x += this.dX * deltaTime;
+      this.y += this.dY * deltaTime;
 
       return true
     }
