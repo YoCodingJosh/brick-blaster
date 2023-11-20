@@ -12,10 +12,10 @@ export abstract class LevelGenerationService {
     for (let i = 0; i < levelHeight; i++) {
       level.bricks[i] = [];
       for (let j = 0; j < Constants.maxLevelWidth; j++) {
-        let brick = new Brick();
+        const brick = new Brick();
 
-        let brickSpriteIndex = 1 + (currentLevel * (j + i + 2)) + (3 + currentLevel);
-        let brickRandomizer = j * brickSpriteIndex + 69 - i + currentLevel;
+        const brickSpriteIndex = 1 + (currentLevel * (j + i + 2)) + (3 + currentLevel);
+        const brickRandomizer = j * brickSpriteIndex + 69 - i + currentLevel;
 
         switch (brickSpriteIndex * brickRandomizer % (currentLevel + i + j)) {
           case 0:

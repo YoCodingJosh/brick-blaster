@@ -1,17 +1,19 @@
 <template>
   <div>
-    <PauseScreen v-if="state.isPaused" :resume-game-function="resumeGame" :main-menu-function="goToMainMenu"></PauseScreen>
-    <GameOverScreen v-if="state.isGameOver" :restart-game-function="restartGame" :main-menu-function="goToMainMenu"></GameOverScreen>
+    <PauseScreen v-if="state.isPaused" :resume-game-function="resumeGame" :main-menu-function="goToMainMenu">
+    </PauseScreen>
+    <GameOverScreen v-if="state.isGameOver" :restart-game-function="restartGame" :main-menu-function="goToMainMenu">
+    </GameOverScreen>
     <div class="scorePanel">
       <img class="pauseButton" @click.prevent="pauseGame()" src="@/assets/game/PauseButton.png">
-      <span class="highScoreText">High Score: {{state.highScore.highScore}}</span>
-      <span class="scoreText">{{state.currentScore.highScore}}</span>
+      <span class="highScoreText">High Score: {{ state.highScore.highScore }}</span>
+      <span class="scoreText">{{ state.currentScore.highScore }}</span>
     </div>
     <canvas id="gameCanvas"></canvas>
     <div class="scorePanel livesPanel">
-      <span v-if="lives > 3">&bull; &times; {{lives}}</span>
+      <span v-if="lives > 3">&bull; &times; {{ lives }}</span>
       <span v-else-if="lives > 0">
-        <span v-for="life in lives">
+        <span v-for="life in lives" :key="`playerLife-${life}`">
           &bull;&nbsp;
         </span>
       </span>
@@ -58,7 +60,7 @@ function updateLivesCount(numLives: number) {
   lives.value = numLives;
 }
 
-function restartGame() {  
+function restartGame() {
   state.isGameOver = false;
   startGame();
 }
@@ -69,7 +71,7 @@ function showGameOver() {
 }
 
 function startGame() {
-  let canvas = <HTMLCanvasElement>document.getElementById("gameCanvas")!;
+  let canvas = document.getElementById("gameCanvas")! as HTMLCanvasElement;
 
   canvas.width = canvas.offsetWidth;
   canvas.height = document.documentElement.clientHeight - (document.getElementsByClassName('scorePanel')[0].clientHeight * 2) - 10;

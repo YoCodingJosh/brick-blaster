@@ -20,6 +20,6 @@ export class Brick {
     ctx.drawImage(this.sprite, this.x, this.y, Constants.brickWidth, Constants.brickHeight);
   }
 
-  update(deltaTime: number) {
-  }
+  // update(deltaTime: number) {
+  // }
 }

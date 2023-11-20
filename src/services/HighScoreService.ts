@@ -5,15 +5,15 @@ export abstract class HighScoreService {
     const highScore = this.getHighScore();
 
     if (newScore && newScore > highScore.highScore) {
-      let jsonString = localStorage.getItem('HighScore') ?? JSON.stringify(this.zeroScoreData());
-      let obj = JSON.parse(jsonString) as HighScoreData;
+      const jsonString = localStorage.getItem('HighScore') ?? JSON.stringify(this.zeroScoreData());
+      const obj = JSON.parse(jsonString) as HighScoreData;
       obj.highScore = newScore;
       localStorage.setItem('HighScore', JSON.stringify(obj));
     }
 
     if (newLevelReached && newLevelReached > highScore.highestLevelReached) {
-      let jsonString = localStorage.getItem('HighScore') ?? JSON.stringify(this.zeroScoreData());
-      let obj = JSON.parse(jsonString) as HighScoreData;
+      const jsonString = localStorage.getItem('HighScore') ?? JSON.stringify(this.zeroScoreData());
+      const obj = JSON.parse(jsonString) as HighScoreData;
       obj.highestLevelReached = newLevelReached;
       localStorage.setItem('HighScore', JSON.stringify(obj));
     }

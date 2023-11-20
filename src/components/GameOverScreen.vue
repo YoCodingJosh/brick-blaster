@@ -4,15 +4,15 @@
     <div class="gameOverMenu">
       <h2 class="pop-outin">Game Over!</h2>
       <ul class="menuList">
-        <li><a href="#" @click.prevent="props.restartGameFunction!()">Restart</a></li>
-        <li><a href="#" @click.prevent="props.mainMenuFunction!()">Back to Main Menu</a></li>
+        <li><a href="#" @click.prevent="restartGameFunction!()">Restart</a></li>
+        <li><a href="#" @click.prevent="mainMenuFunction!()">Back to Main Menu</a></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   restartGameFunction: Function,
   mainMenuFunction: Function,
 });

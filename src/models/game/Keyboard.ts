@@ -18,7 +18,7 @@ export class Keyboard {
   }
 
   isKeyPressed(code: string) : boolean {
-    let value = this.keys.get(code);
+    const value = this.keys.get(code);
 
     return !value ? false : value!.pressed;
   }
