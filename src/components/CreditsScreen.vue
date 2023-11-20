@@ -95,6 +95,6 @@ header h1 {
 
 .credit pre {
   white-space: pre-wrap;
-  font-size: smaller;
+  font-size: 0.75em;
 }
 </style>
