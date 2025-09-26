@@ -2,6 +2,8 @@
 
 A super basic but super kick ass breakout style game.
 
+I'm rewriting it to be way better and maybe sell it, but play the demo here: https://brick-blaster.hypeworks.net/
+
 ## License
 
 Licensed under the MIT license. Please see `LICENSE` for more details.
